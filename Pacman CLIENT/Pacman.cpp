@@ -23,6 +23,10 @@ int anteriorpx, anteriorpy;
 long int punts = -5;
 int vides = 3;
 bool gotLife = false;
+
+enum gameStates { MENU, PLAY, RANKING, PERSONALBEST, ACHIEVMENTS, LEAVE }; //Estats en els quals es pot trobar el joc
+gameStates currentGameState = MENU; //Estat actual del joc, marca en quina escena ens trobem
+
 void setCColor(int color)
 {
 	static HANDLE hConsole;
@@ -551,35 +555,35 @@ void achievments() //Funcio que actua com a escena achievments
 
 }
 
-enum gameStates {MENU, PLAY, RANKING, PERSONALBEST, ACHIEVMENTS, LEAVE}; //Estats en els quals es pot trobar el joc
-gameStates currentGameState = MENU; //Estat actual del joc, marca en quina escena ens trobem
 
 int main() {
 
-	switch (currentGameState) //Bootleg "Scene Manager" xD
-	{
-	case MENU:
-		system("cls");
-		menu();
-		break;
-	case PLAY:
-		system("cls");
-		play();
-		break;
-	case RANKING:
-		system("cls");
-		ranking();
-		break;
-	case PERSONALBEST:
-		system("cls");
-		personalbest();
-		break;
-	case ACHIEVMENTS:
-		system("cls");
-		achievments();
-		break;
-	case LEAVE:
-		exit(0);
+	for (;;) {
+		switch (currentGameState) //Bootleg "Scene Manager" xD
+		{
+		case MENU:
+			system("cls");
+			menu();
+			break;
+		case PLAY:
+			system("cls");
+			play();
+			break;
+		case RANKING:
+			system("cls");
+			ranking();
+			break;
+		case PERSONALBEST:
+			system("cls");
+			personalbest();
+			break;
+		case ACHIEVMENTS:
+			system("cls");
+			achievments();
+			break;
+		case LEAVE:
+			exit(0);
+		}
 	}
 
 	system("pause>NULL");
