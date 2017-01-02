@@ -468,8 +468,51 @@ void moureFantasmesThread(fantasma ghostA, fantasma ghostB, fantasma ghostC, fan
 	}
 }
 
-int main() {
+void menu() //Funcio que actua com a escena menu
+{
+	int menuSelection;
+	cout << "	   	    _______  _______  _______         __   __  _______  __    _ " << endl;
+	cout << "		   |       ||   _   ||       |       |  |_|  ||   _   ||  |  | |" << endl;
+	cout << "		   |    _  ||  |_|  ||       | ____  |       ||  |_|  ||   |_| |" << endl;
+	cout << "		   |   |_| ||       ||       ||____| |       ||       ||       |" << endl;
+	cout << "		   |    ___||       ||      _|       |       ||       ||  _    |" << endl;
+	cout << "		   |   |    |   _   ||     |_        | ||_|| ||   _   || | |   |" << endl;
+	cout << "		   |___|    |__| |__||_______|       |_|   |_||__| |__||_|  |__|" << endl;
+	cout << "\n			           Per Daniel Peco i Dylan Calaf			             \n" << endl;
 
+	cout << "			                     - MENU -" << endl;
+	cout << "1 - Jugar" << endl;
+	cout << "2 - Consultar Rànking" << endl;
+	cout << "3 - Consultar millors puntuacions" << endl;
+	cout << "4 - Consultar Achievements" << endl;
+	cout << "5 - Sortir" << endl;
+
+	cout << "\nIntrodueix numero:" << endl;
+
+	cin >> menuSelection;
+
+	switch (menuSelection) 
+	{
+	case 1:
+		currentGameState = PLAY;
+		break;
+	case 2:
+		currentGameState = RANKING;
+		break;
+	case 3:
+		currentGameState = PERSONALBEST;
+		break;
+	case 4:
+		currentGameState = ACHIEVMENTS;
+		break;
+	case 5:
+		currentGameState = LEAVE;
+		break;
+	}
+}
+
+void play() //Funcio que actua com a escena joc
+{
 	fantasma ghostA = inicialitzarFantasma(41, 14, 2);
 	fantasma ghostB = inicialitzarFantasma(43, 14, 3);
 	fantasma ghostC = inicialitzarFantasma(40, 14, 4);
@@ -490,6 +533,53 @@ int main() {
 	for (int i = 0; i <= vides; i++) {
 		gotoxy(5, i + 27);
 		printf(" ");
+	}
+}
+
+void ranking() //Funcio que actua com a escena ranking
+{
+
+}
+
+void personalbest() //Funcio que actua com a escena millors resultats personals
+{
+
+}
+
+void achievments() //Funcio que actua com a escena achievments
+{
+
+}
+
+enum gameStates {MENU, PLAY, RANKING, PERSONALBEST, ACHIEVMENTS, LEAVE}; //Estats en els quals es pot trobar el joc
+gameStates currentGameState = MENU; //Estat actual del joc, marca en quina escena ens trobem
+
+int main() {
+
+	switch (currentGameState) //Bootleg "Scene Manager" xD
+	{
+	case MENU:
+		system("cls");
+		menu();
+		break;
+	case PLAY:
+		system("cls");
+		play();
+		break;
+	case RANKING:
+		system("cls");
+		ranking();
+		break;
+	case PERSONALBEST:
+		system("cls");
+		personalbest();
+		break;
+	case ACHIEVMENTS:
+		system("cls");
+		achievments();
+		break;
+	case LEAVE:
+		exit(0);
 	}
 
 	system("pause>NULL");
