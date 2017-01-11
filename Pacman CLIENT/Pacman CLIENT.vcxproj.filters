@@ -26,5 +26,8 @@
     <ClInclude Include="CLIENT header.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="pacman.hh">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
