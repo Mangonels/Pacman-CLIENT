@@ -13,6 +13,13 @@ struct Result {
 	string name = "EMPTY";
 };
 
+int score = 0;
+bool a1 = false;
+bool a2 = false;
+bool a3 = false;
+bool a4 = false;
+bool a5 = false;
+
 void menu() //Funcio que actua com a escena menu
 {
 	int menuSelection;
@@ -80,7 +87,7 @@ void personalbest(int score) //Funcio que actua com a escena millors resultats p
 	currentGameState = MENU;
 }
 
-void achievements(bool a1, bool a2, bool a3, bool a4, bool a5) //Funcio que actua com a escena achievments
+void achievements() //Funcio que actua com a escena achievments
 {
 	cout << "No fer cap punt i morir: " << a1 << "\n";
 	cout << "Aconseguir 50 punts: " << a2 << "\n";
@@ -92,18 +99,16 @@ void achievements(bool a1, bool a2, bool a3, bool a4, bool a5) //Funcio que actu
 	currentGameState = MENU;
 }
 
-
 int main() {
+	string username;
 	bool isRunning = true;
-	int score = 0;
-	bool a1 = false;
-	bool a2 = false;
-	bool a3 = false;
-	bool a4 = false;
-	bool a5 = false;
+	
 
 	list<Result> ranking;
 	ranking.resize(10);
+
+	std::cout << "Please, enter your user name: ";
+	cin >> username;
 
 		while (isRunning) {
 		switch (currentGameState) //Bootleg "Scene Manager" xD
@@ -126,7 +131,7 @@ int main() {
 			break;
 		case ACHIEVEMENTS:
 			system("cls");
-			achievements(a1,a2,a3,a4,a5);
+			achievements();
 			break;
 		case LEAVE:
 			isRunning = false;

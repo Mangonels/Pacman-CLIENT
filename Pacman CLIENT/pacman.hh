@@ -23,7 +23,7 @@ int anteriorpx, anteriorpy;
 long int punts = -5;
 int vides = 3;
 bool gotLife = false;
-
+const clock_t begin_time = clock();
 
 void setCColor(int color)
 {
@@ -470,6 +470,14 @@ void moureFantasmesThread(fantasma ghostA, fantasma ghostB, fantasma ghostC, fan
 	}
 }
 
+void CheckAchievements() {
+	if (punts > 50 && a1 == false) a1 = true;
+	if (punts > 100 && a2 == false) a2 = true;
+
+	if (clock() - begin_time > 30000 && a4 == false) a4 = true;
+	if (clock() - begin_time > 60000 && a5 == false) a5 = true;
+
+}
 
 void play() //Funcio que actua com a escena joc
 {
