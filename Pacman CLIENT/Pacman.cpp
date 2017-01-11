@@ -5,7 +5,7 @@
 using namespace std;
 
 
-enum gameStates { MENU, PLAY, RANKING, PERSONALBEST, ACHIEVMENTS, LEAVE }; //Estats en els quals es pot trobar el joc
+enum gameStates { MENU, PLAY, RANKING, PERSONALBEST, ACHIEVEMENTS, LEAVE }; //Estats en els quals es pot trobar el joc
 gameStates currentGameState = MENU; //Estat actual del joc, marca en quina escena ens trobem
 
 struct Result {
@@ -48,7 +48,7 @@ void menu() //Funcio que actua com a escena menu
 		currentGameState = PERSONALBEST;
 		break;
 	case 4:
-		currentGameState = ACHIEVMENTS;
+		currentGameState = ACHIEVEMENTS;
 		break;
 	case 5:
 		currentGameState = LEAVE;
@@ -94,6 +94,7 @@ void achievements(bool a1, bool a2, bool a3, bool a4, bool a5) //Funcio que actu
 
 
 int main() {
+	bool isRunning = true;
 	int score = 0;
 	bool a1 = false;
 	bool a2 = false;
@@ -104,7 +105,7 @@ int main() {
 	list<Result> ranking;
 	ranking.resize(10);
 
-	for (;;) {
+		while (isRunning) {
 		switch (currentGameState) //Bootleg "Scene Manager" xD
 		{
 		case MENU:
@@ -123,16 +124,13 @@ int main() {
 			system("cls");
 			personalbest(score);
 			break;
-		case ACHIEVMENTS:
+		case ACHIEVEMENTS:
 			system("cls");
 			achievements(a1,a2,a3,a4,a5);
 			break;
 		case LEAVE:
-			exit(0);
+			isRunning = false;
 		}
 	}
-
-	system("pause>NULL");
 	return 0;
-
 }
