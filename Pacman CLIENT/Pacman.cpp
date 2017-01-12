@@ -5,21 +5,6 @@
 using namespace std;
 
 
-enum gameStates { MENU, PLAY, RANKING, PERSONALBEST, ACHIEVEMENTS, LEAVE }; //Estats en els quals es pot trobar el joc
-gameStates currentGameState = MENU; //Estat actual del joc, marca en quina escena ens trobem
-
-struct Result {
-	int score = 0;
-	string name = "EMPTY";
-};
-
-int score = 0;
-bool a1 = false;
-bool a2 = false;
-bool a3 = false;
-bool a4 = false;
-bool a5 = false;
-
 void menu() //Funcio que actua com a escena menu
 {
 	int menuSelection;
@@ -87,28 +72,29 @@ void personalbest(int score) //Funcio que actua com a escena millors resultats p
 	currentGameState = MENU;
 }
 
-void achievements() //Funcio que actua com a escena achievments
+void achievements(Player player) //Funcio que actua com a escena achievments
 {
-	cout << "No fer cap punt i morir: " << a1 << "\n";
-	cout << "Aconseguir 50 punts: " << a2 << "\n";
-	cout << "Aconseguir 100 punts: " << a3 << "\n";
-	cout << "Sobreviure mig minut en una partida: " << a4 << "\n";
-	cout << "Sobreviure 1 minut en una partida: " << a5 << "\n";
+	cout << "No fer cap punt i morir: " << player.a1 << "\n";
+	cout << "Aconseguir 50 punts: " << player.a2 << "\n";
+	cout << "Aconseguir 100 punts: " << player.a3 << "\n";
+	cout << "Sobreviure mig minut en una partida: " << player.a4 << "\n";
+	cout << "Sobreviure 1 minut en una partida: " << player.a5 << "\n";
 	cout << "\n\n\nPress any key to go back";
 	system("pause>NULL");
 	currentGameState = MENU;
 }
 
 int main() {
-	string username;
 	bool isRunning = true;
-	
+	Player player;
 
 	list<Result> ranking;
 	ranking.resize(10);
 
 	std::cout << "Please, enter your user name: ";
-	cin >> username;
+	cin >> player.name;
+
+	//aqui va lo de conectar con el servidor y esas cosas
 
 		while (isRunning) {
 		switch (currentGameState) //Bootleg "Scene Manager" xD
@@ -119,7 +105,7 @@ int main() {
 			break;
 		case PLAY:
 			system("cls");
-			play();
+			player = play(player);
 			break;
 		case RANKING:
 			system("cls");
@@ -127,11 +113,11 @@ int main() {
 			break;
 		case PERSONALBEST:
 			system("cls");
-			personalbest(score);
+			personalbest(player.score);
 			break;
 		case ACHIEVEMENTS:
 			system("cls");
-			achievements();
+			achievements(player);
 			break;
 		case LEAVE:
 			isRunning = false;

@@ -8,6 +8,17 @@
 #include <mutex>
 
 using namespace std;
+
+
+
+enum gameStates { MENU, PLAY, RANKING, PERSONALBEST, ACHIEVEMENTS, LEAVE }; //Estats en els quals es pot trobar el joc
+gameStates currentGameState = MENU; //Estat actual del joc, marca en quina escena ens trobem
+
+struct Result {
+	int score = 0;
+	string name = "EMPTY";
+};
+
 #define ARRIBA     72      // CONSTANTS AMB LES FLETXES DEL TECLAT
 #define IZQUIERDA  75
 #define DERECHA    77
@@ -24,6 +35,20 @@ long int punts = -5;
 int vides = 3;
 bool gotLife = false;
 const clock_t begin_time = clock();
+bool activateAchievementOne = false;
+int boles = 0;
+int maxBoles = 391;
+
+
+struct Player {
+	string name = "";
+	int score = 0;
+	bool a1 = false;
+	bool a2 = false;
+	bool a3 = false;
+	bool a4 = false;
+	bool a5 = false;
+};
 
 void setCColor(int color)
 {
@@ -93,7 +118,38 @@ char mapa[50][100] = {
 	"                  Y_________________|_____|_________________Y",
 	"                  DXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXC",
 };
-
+char mapaBackup[50][100] = {
+	"                                                      ",
+	"                  AXXXXXXXXXXXXXXXXXXXB AXXXXXXXXXXXXXXXXXXXB",
+	"                  Y___________________Y Y___________________Y",
+	"                  Y_AXXXXXB_AXXXXXXXB_Y Y_AXXXXXXXB_AXXXXXB_Y",
+	"                  Y_Y     Y_Y       Y_Y Y_Y       Y_Y     Y_Y",
+	"                  Y_DXXXXXC_DXXXXXXXC_DXC_DXXXXXXXC_DXXXXXC_Y",
+	"                  Y________|_________|___|_________|________Y",
+	"                  Y_AXXXXXB_AXB_AXXXXXXXXXXXXXB_AXB_AXXXXXB_Y",
+	"                  Y_DXXXXXC_Y Y_DXXXXB   AXXXXC_Y Y_DXXXXXC_Y",
+	"                  Y_________Y Y______Y   Y______Y Y_________Y",
+	"                  DXXXXXXXB_Y DXXXXB_Y   Y_AXXXXC Y_AXXXXXXXC",
+	"                          Y_Y AXXXXC_DXXXC_DXXXXB Y_Y        ",
+	"                          Y_Y Y_________________Y Y_Y        ",
+	"                  XXXXXXXXC_DXC_AXXXXXX XXXXXXB_DXC_DXXXXXXXX",
+	"                 T_________|____Y      *      Y____|_________T",
+	"                  XXXXXXXXB_AXB_DXXXXXXXXXXXXXC_AXB_AXXXXXXXX",
+	"                          Y_Y Y_________________Y Y_Y        ",
+	"                          Y_Y Y_AXXXXXXXXXXXXXB_Y Y_Y        ",
+	"                  AXXXXXXXC_DXC_DXXXXB   AXXXXC_DXC_DXXXXXXXB",
+	"                  Y________|_________Y   Y_________|________Y",
+	"                  Y_AXXXXXB_AXXXXXXB_Y   Y_AXXXXXXB_AXXXXXB_Y",
+	"                  Y_DXXXB Y_DXXXXXXC_DXXXC_DXXXXXXC_Y AXXXC_Y",
+	"                  Y_____Y Y_________|_____|_________Y Y_____Y",
+	"                  DXXXB_Y Y_AXB_AXXXXXXXXXXXXXB_AXB_Y Y_AXXXC",
+	"                  AXXXC_DXC_Y Y_DXXXXB   AXXXXC_Y Y_DXC_DXXXB",
+	"                  Y_________Y Y______Y   Y______Y Y_________Y",
+	"                  Y_AXXXXXXXC DXXXXB_Y   Y_AXXXXC DXXXXXXXB_Y",
+	"                  Y_DXXXXXXXXXXXXXXC_DXXXC_DXXXXXXXXXXXXXXC_Y",
+	"                  Y_________________|_____|_________________Y",
+	"                  DXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXC",
+};
 
 void pintar_mapa()// Funcio que imprimeix el mapa basant-se en el mapa codificat
 {
@@ -173,6 +229,7 @@ void pintarPacman(int x, int y) {
 	gotoxy(x, y);			//TODO anar a la posicio indicada (funció)
 	if (mapa[y][x] == '_') {
 		punts += 5;
+		boles++;
 		mapa[y][x] = '|';
 	}
 	printf("%c", 6);		//TODO imprimir el caracter amb codi ASCII 6
@@ -241,7 +298,6 @@ fantasma inicialitzarFantasma(int x, int y, int color) {
 	return newFantasma;
 }
 
-
 void pintarFantasma(fantasma ghost) {
 
 	setCColor(color[ghost.col]);	//TODO seleccionar color (funció)
@@ -258,13 +314,14 @@ void xocPacman(fantasma &ghost) {
 	//dir = 4 i disminuiren una les vides
 	if ((x == ghost._x && y == ghost._y) || (anteriorpx == ghost._x && anteriorpy == ghost._y)) {
 		borrarPacman(x, y);
-		x = 39; y = 22; dir = 4; vides--; punts -= 25; //condicions al perdre vida
+		x = 39; y = 22; dir = 4; vides--; 
+		if (punts > 0) punts -= 25; //condicions al perdre vida
+		else activateAchievementOne = true;
 		pintarPacman(x, y);
 	}
 }
 
 void moureFantasma(fantasma &ghost) {
-
 
 	int bolx = ghost._x, boly = ghost._y;
 
@@ -441,7 +498,7 @@ void marcador() {
 }
 
 void marcadorThread() {
-	while (vides > 0) {
+	while (vides > 0 && boles < maxBoles) {
 		mtx.lock();
 		marcador();
 		mtx.unlock();
@@ -450,7 +507,7 @@ void marcadorThread() {
 }
 void mourePacmanThread() {
 
-	while (vides > 0) {
+	while (vides > 0 && boles < maxBoles) {
 		mtx.lock();
 		mourePacman();
 		mtx.unlock();
@@ -459,7 +516,7 @@ void mourePacmanThread() {
 
 }
 void moureFantasmesThread(fantasma ghostA, fantasma ghostB, fantasma ghostC, fantasma ghostD) {
-	while (vides > 0) {
+	while (vides > 0 && boles < maxBoles) {
 		mtx.lock();
 		moureFantasma(ghostA);
 		moureFantasma(ghostB);
@@ -470,17 +527,25 @@ void moureFantasmesThread(fantasma ghostA, fantasma ghostB, fantasma ghostC, fan
 	}
 }
 
-void CheckAchievements() {
-	if (punts > 50 && a1 == false) a1 = true;
-	if (punts > 100 && a2 == false) a2 = true;
-
-	if (clock() - begin_time > 30000 && a4 == false) a4 = true;
-	if (clock() - begin_time > 60000 && a5 == false) a5 = true;
-
-}
-
-void play() //Funcio que actua com a escena joc
+Player play(Player player) //Funcio que actua com a escena joc
 {
+	//reset
+	backcolor = 0;
+	dir = 0;
+	x = 39, y = 22;
+	anteriorpx, anteriorpy;
+	punts = -5;
+	vides = 3;
+	gotLife = false;
+	clock_t begin_time = clock();
+	boles = 0;
+	maxBoles = 391;
+	for (int i = 0; i < 50; i++) {
+		for (int j = 0; j < 100; j++) {
+			mapa[i][j] = mapaBackup[i][j];
+		}
+	}
+
 	fantasma ghostA = inicialitzarFantasma(41, 14, 2);
 	fantasma ghostB = inicialitzarFantasma(43, 14, 3);
 	fantasma ghostC = inicialitzarFantasma(40, 14, 4);
@@ -493,13 +558,24 @@ void play() //Funcio que actua com a escena joc
 	thread tmarcador(marcadorThread);
 	thread pacman(mourePacmanThread);
 	thread fantasmes(moureFantasmesThread, ghostA, ghostB, ghostC, ghostD);
-
+	
 	tmarcador.join();
 	pacman.join();
 	fantasmes.join();
+	
+	tmarcador.~thread();
+	pacman.~thread();
+	fantasmes.~thread();
 
-	for (int i = 0; i <= vides; i++) {
-		gotoxy(5, i + 27);
-		printf(" ");
-	}
+	player.score = punts;
+	currentGameState = MENU;
+	setCColor(color[7]);
+
+	if (activateAchievementOne == true && player.a1 == false) player.a1 = true;
+	if (player.score > 50 && player.a2 == false) player.a2 = true;
+	if (punts > 100 && player.a3 == false) player.a3 = true;
+	if (clock() - begin_time > 30000 && player.a4 == false) player.a4 = true;
+	if (clock() - begin_time > 60000 && player.a5 == false) player.a5 = true;
+
+	return player;
 }
