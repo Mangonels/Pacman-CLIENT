@@ -494,7 +494,6 @@ void marcador() {
 
 	setCColor(color[2]);
 	gotoxy(70, 27); printf("%c", 169);
-
 }
 
 void marcadorThread() {
@@ -505,6 +504,7 @@ void marcadorThread() {
 		Sleep(110);
 	}
 }
+
 void mourePacmanThread() {
 
 	while (vides > 0 && boles < maxBoles) {
