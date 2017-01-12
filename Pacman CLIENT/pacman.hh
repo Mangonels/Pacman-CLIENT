@@ -477,7 +477,7 @@ void marcador() {
 	setCColor(color[6]);
 	gotoxy(5, 6); printf("%ld", punts);
 
-	if (punts % 25 == 0 && punts > 0 && gotLife == false) {
+	if (punts % 500 == 0 && punts > 0 && gotLife == false) {
 		vides++;
 		gotLife = true;
 	}
