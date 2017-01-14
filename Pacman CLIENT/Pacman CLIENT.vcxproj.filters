@@ -15,19 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Pacman.cpp">
+    <ClCompile Include="CLIENT connect.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CLIENT connect.cpp">
+    <ClCompile Include="Pacman.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CLIENT header.h">
+    <ClInclude Include="Pacman.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pacman.hh">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="CLIENT connect.hh">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

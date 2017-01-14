@@ -142,12 +142,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CLIENT connect.cpp" />
-    <ClCompile Include="Pacman.cpp" />
+    <ClCompile Include="CLIENT connect.cc" />
+    <ClCompile Include="Pacman.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CLIENT header.h" />
-    <ClInclude Include="pacman.hh" />
+    <ClInclude Include="CLIENT connect.hh" />
+    <ClInclude Include="Pacman.hh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
