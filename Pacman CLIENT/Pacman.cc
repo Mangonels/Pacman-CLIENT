@@ -90,7 +90,7 @@ void achievements(Player player)
 }
 
 int main() {
-	/*
+
 	bool isRunning = true;
 	Player player;
 
@@ -133,5 +133,4 @@ int main() {
 		}
 	}
 	return 0;
-	*/
 }
