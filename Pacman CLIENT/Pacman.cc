@@ -82,7 +82,8 @@ void achievements(Player player)
 	cout << "Aconseguir 50 punts: " << player.a2 << "\n";
 	cout << "Aconseguir 100 punts: " << player.a3 << "\n";
 	cout << "Sobreviure mig minut en una partida: " << player.a4 << "\n";
-	cout << "Sobreviure 1 minut en una partida: " << player.a5 << "\n";
+	cout << "Sobreviure 1 minut en una partida: " << player.a5 << "\n";
+
 	cout << "\n\n\nPress any key to go back";
 	system("pause>NULL");
 	currentGameState = MENU;

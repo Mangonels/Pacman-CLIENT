@@ -40,11 +40,13 @@ void GetData(string playername, Player &player, list<Result> &address_book)
 	SOCKET sock;
 	sock = socket(AF_INET, SOCK_STREAM, NULL);
 
-	ADDRESS.sin_addr.s_addr = inet_addr("127.0.0.1");
+	ADDRESS.sin_addr.s_addr = inet_addr("192.168.1.33");
 	ADDRESS.sin_family = AF_INET;
 	ADDRESS.sin_port = htons(444);
 
 	connect(sock, (SOCKADDR*)&ADDRESS, sizeof(ADDRESS));
+
+
 
 	SUCCESSFUL = recv(sock, MESSAGE, sizeof(MESSAGE), NULL);
 
