@@ -46,8 +46,6 @@ void GetData(string playername, Player &player, list<Result> &address_book)
 
 	connect(sock, (SOCKADDR*)&ADDRESS, sizeof(ADDRESS));
 
-
-
 	SUCCESSFUL = recv(sock, MESSAGE, sizeof(MESSAGE), NULL);
 
 	player.name = MESSAGE;
