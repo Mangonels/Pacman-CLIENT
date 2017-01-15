@@ -90,6 +90,7 @@ void achievements(Player player)
 }
 
 int main() {
+	/*
 	bool isRunning = true;
 	Player player;
 
@@ -101,7 +102,7 @@ int main() {
 
 	//CONEXION SECTION:
 
-	GetData(player.name, player, ranking); //Filling up base startup data.
+	//GetData(player.name, player, ranking); //Filling up base startup data.
 
 	//SCENE MANAGER:
 		while (isRunning) {
@@ -132,4 +133,5 @@ int main() {
 		}
 	}
 	return 0;
+	*/
 }
