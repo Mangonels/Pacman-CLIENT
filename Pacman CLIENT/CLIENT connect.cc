@@ -1,56 +1,37 @@
 //TCP CLIENT source file
 
 #include "CLIENT connect.hh"
-#include <list>
 
 using namespace std;
 
-/*
-struct Player {
-	string name = "";
-	int score = 0;
-	bool a1 = false;
-	bool a2 = false;
-	bool a3 = false;
-	bool a4 = false;
-	bool a5 = false;
-};
-
-struct Result {
-	int score = 0;
-	string name = "EMPTY";
-};*/
-
-//GETTING NECESARY STARTUP DATA:
-//Recieves playername, and modifies "Pacman.cc" player and ranking data structures
-void GetData()//string playername, Player &player, list<Result> &address_book
+void GetData()
 {
-	//Locals
-	long SUCCESSFUL;
-	WSAData WinSockData;
-	WORD DLLVersion;
-	DLLVersion = MAKEWORD(2, 1);
-	SUCCESSFUL = WSAStartup(DLLVersion, &WinSockData);
+	//WINSOCK STARTUP:
+	WSAData wsaData;
+	WORD DllVersion = MAKEWORD(2, 1);
+	if (WSAStartup(DllVersion, &wsaData) != 0) //WSAStartup should return 0, else, error.
+	{
+		MessageBoxA(NULL, "Winsock startup failed", "Error", MB_OK | MB_ICONERROR);
+		exit(1);
+	}
 
-	string RESPONSE;
-	string CONVERTER;
-	char MESSAGE[200];
+	//SOCKET ADDRESS INFORMATION:
+	SOCKADDR_IN addr; //Address that we will bind our listening socket to
+	int addrlen = sizeof(addr); //Address length
+	addr.sin_addr.s_addr = inet_addr("192.168.1.33"); //IP a la que nos conectamos
+	addr.sin_port = htons(1111); //PORT
+	addr.sin_family = AF_INET; //IPv4 Socket
 
-	SOCKADDR_IN ADDRESS;
-
-	SOCKET sock;
-	sock = socket(AF_INET, SOCK_STREAM, NULL);
-
-	ADDRESS.sin_addr.s_addr = inet_addr("192.168.1.33");
-	ADDRESS.sin_family = AF_INET;
-	ADDRESS.sin_port = htons(444);
-
-	connect(sock, (SOCKADDR*)&ADDRESS, sizeof(ADDRESS));
-
-	SUCCESSFUL = recv(sock, MESSAGE, sizeof(MESSAGE), NULL);
-
-	CONVERTER = MESSAGE;
-
-	cout << "\n\tMessage from SERVER:\n\n\t" << CONVERTER << endl;
-
+	//CREATING SOCKET:
+	SOCKET Connection = socket(AF_INET, SOCK_STREAM, NULL); //Set connection socket
+	if (connect(Connection, (SOCKADDR*)&addr, addrlen) != 0) //If we are unable to connect...
+	{
+		MessageBoxA(NULL, "Failed to Connect", "Error", MB_OK | MB_ICONERROR);
+	}
+	cout << "Connected!" << endl;
+	
+	//RECIEVING INFO:
+	char MESSAGE[256];
+	recv(Connection, MESSAGE, sizeof(MESSAGE), NULL); //Recieve message and place into MESSAGE array
+	cout << "MESSAGE:" << MESSAGE << endl;
 }
