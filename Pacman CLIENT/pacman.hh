@@ -9,8 +9,6 @@
 
 using namespace std;
 
-
-
 enum gameStates { MENU, PLAY, RANKING, PERSONALBEST, ACHIEVEMENTS, LEAVE }; //Estats en els quals es pot trobar el joc
 gameStates currentGameState = MENU; //Estat actual del joc, marca en quina escena ens trobem
 
@@ -38,7 +36,6 @@ const clock_t begin_time = clock();
 bool activateAchievementOne = false;
 int boles = 0;
 int maxBoles = 391;
-
 
 struct Player {
 	string name = "";

@@ -2,10 +2,12 @@
 #include <list>
 #include <string>
 #include "pacman.hh"
+#include "CLIENT connect.cc"
+
 using namespace std;
 
-
-void menu() //Funcio que actua com a escena menu
+//MENU SCENE:
+void menu()
 {
 	int menuSelection;
 	cout << "	   	    _______  _______  _______         __   __  _______  __    _ " << endl;
@@ -48,8 +50,8 @@ void menu() //Funcio que actua com a escena menu
 	}
 }
 
-
-void rankings(list<Result> ranking) //Funcio que actua com a escena ranking
+//RANKING SCENE:
+void rankings(list<Result> ranking)
 {
 	std::cout << "TOP 10 idiots:\n\n";
 
@@ -64,7 +66,8 @@ void rankings(list<Result> ranking) //Funcio que actua com a escena ranking
 	currentGameState = MENU;
 }
 
-void personalbest(int score) //Funcio que actua com a escena millors resultats personals
+//PERSONALBEST SCENE:
+void personalbest(int score)
 {
 	cout << "Your personal best is: " << score;
 	cout << "\n\n\nPress any key to go back";
@@ -72,7 +75,8 @@ void personalbest(int score) //Funcio que actua com a escena millors resultats p
 	currentGameState = MENU;
 }
 
-void achievements(Player player) //Funcio que actua com a escena achievments
+//ACHIEVEMENTS SCENE:
+void achievements(Player player)
 {
 	cout << "No fer cap punt i morir: " << player.a1 << "\n";
 	cout << "Aconseguir 50 punts: " << player.a2 << "\n";
@@ -91,13 +95,16 @@ int main() {
 	list<Result> ranking;
 	ranking.resize(10);
 
-	std::cout << "Please, enter your user name: ";
+	cout << "Please, enter your user name: ";
 	cin >> player.name;
 
-	//aqui va lo de conectar con el servidor y esas cosas
+	//CONEXION SECTION:
 
+	GetData(player.name, player, ranking); //Filling up base startup data.
+
+	//SCENE MANAGER:
 		while (isRunning) {
-		switch (currentGameState) //Bootleg "Scene Manager" xD
+		switch (currentGameState)
 		{
 		case MENU:
 			system("cls");

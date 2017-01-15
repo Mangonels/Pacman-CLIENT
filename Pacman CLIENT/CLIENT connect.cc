@@ -1,10 +1,28 @@
 //TCP CLIENT source file
 
 #include "CLIENT connect.hh"
+#include <list>
 
 using namespace std;
 
-void connect()
+struct Player {
+	string name = "";
+	int score = 0;
+	bool a1 = false;
+	bool a2 = false;
+	bool a3 = false;
+	bool a4 = false;
+	bool a5 = false;
+};
+
+struct Result {
+	int score = 0;
+	string name = "EMPTY";
+};
+
+//GETTING NECESARY STARTUP DATA:
+//Recieves playername, and modifies "Pacman.cc" player and ranking data structures
+void GetData(string playername, Player &player, list<Result> &address_book)
 {
 	//Necesary variables:
 	long SUCCESSFUL;
@@ -13,8 +31,8 @@ void connect()
 	DLLVersion = MAKEWORD(2, 1);
 	SUCCESSFUL = WSAStartup(DLLVersion, &WinSockData);
 
-//	string RESPONSE;
-	string CONVERTER; // <-- AQUI LLEGA EL MENSAJE!! XD
+	//Player struct constructing:
+//	string CONVERTER; // <-- AQUI LLEGA EL MENSAJE!! XD
 	char MESSAGE[200];
 
 	SOCKADDR_IN ADDRESS;
@@ -26,29 +44,12 @@ void connect()
 	ADDRESS.sin_family = AF_INET;
 	ADDRESS.sin_port = htons(444);
 
-//	cout << "\n\tCLIENT: Do you want to connect to this SERVER? (Y\N)";
-//	cin >> RESPONSE;
+	connect(sock, (SOCKADDR*)&ADDRESS, sizeof(ADDRESS));
 
-//	if (RESPONSE == "n")
-//	{
-//		cout << "\n\tOK. Quitting instead.";
-//	}
-//	else if (RESPONSE == "y")
-//	{
-		connect(sock, (SOCKADDR*)&ADDRESS, sizeof(ADDRESS));
+	SUCCESSFUL = recv(sock, MESSAGE, sizeof(MESSAGE), NULL);
 
-		SUCCESSFUL = recv(sock, MESSAGE, sizeof(MESSAGE), NULL);
+	player.name = MESSAGE;
+//	player.score = stoi(MESSAGE);
 
-		CONVERTER = MESSAGE;
-
-		cout << "\n\tMessage from SERVER:\n\n\t" << CONVERTER << endl;
-//	}
-//	else
-//	{
-//		cout << "\n\tThat was an inappropiate RESPONSE!";
-//	}
-
-//	cout << "\n\n\t";
-//	system("PAUSE");
-//	exit(1);
+	cout << "\n\tRecieved from SERVER:\n\n\t" << player.name << endl;
 }
